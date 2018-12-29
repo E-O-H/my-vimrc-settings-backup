@@ -106,7 +106,9 @@ xnoremap <silent><expr> <A-k> mode() ==# "V" ? "\"od<Up>\"oP`[V`]l" : "\"od<Up>\
 xnoremap <silent><expr> <A-j> mode() ==# "V" ? "\"od\"op`[V`]l" : "\"od<Down>\"oP`[v`]l"
 
 " Highlight same word under cursor
-nnoremap <leader><space> * #
+" (Note this shortcut only works on GVim/MacVim; in terminal <C-Space> is
+" badly interpreted and Vim would only receive <Nul>.)
+nnoremap <C-space> *#
 
 """""" INSERT MODE SHORTCUTS """"""
 " insert mode navigation/editing
