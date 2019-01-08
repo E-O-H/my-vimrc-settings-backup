@@ -2,33 +2,20 @@ source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
 
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      if empty(&shellxquote)
-        let l:shxq_sav = ''
-        set shellxquote&
-      endif
-      let cmd = '"' . $VIMRUNTIME . '\diff"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-  if exists('l:shxq_sav')
-    let &shellxquote=l:shxq_sav
-  endif
-endfunction
 
+"""""" UNMAP GVIM FOR WINDOWS SHORTCUTS in mswin.vim """"""
+"""""" (or provide substitute for overrided shortcuts) """"""
+
+" Don't use ALT key for GUI menu (F10 can still be used to focus on menu)
+set winaltkeys=no
+
+" Next page (opens GUI search panel in gwim for windows)
+" (Pairs with <C-B>)
+unmap <C-F>
+" Scroll up one line (<C-Y> is mapped to be the same as <C-R> in windows)
+" (Pairs with <C-E>)
+" (<C-@> is somehow the only usable Ctrl+Number)
+nnoremap <C-@> <C-Y>
+" Increment/Decrement number (substitute for <C-A> and <C-X>)
+:nnoremap <F3> <C-a>
+:nnoremap <F2> <C-x>
