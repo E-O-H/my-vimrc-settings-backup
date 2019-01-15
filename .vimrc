@@ -136,8 +136,8 @@ imap <A-w> <C-O>w
 imap <A-W> <C-O>W
 imap <A-b> <C-O>b
 imap <A-B> <C-O>B
-imap <A-e> <C-O>e <C-O> a
-imap <A-E> <C-O>E <C-O> a
+imap <A-e> <C-O>e<C-O>a
+imap <A-E> <C-O>E<C-O>a
 imap <A-I> <C-O>zz
 imap ° <C-O>0
 imap ´ <C-O>4
