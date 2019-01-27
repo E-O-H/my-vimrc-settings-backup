@@ -19,3 +19,8 @@ nnoremap <C-@> <C-Y>
 " Increment/Decrement number (substitute for <C-A> and <C-X>)
 :nnoremap <F3> <C-a>
 :nnoremap <F2> <C-x>
+
+" Use inclusive selection for visual mode (since "behave mswin" set it to
+" exclusive mode). The fanfingtastic plugin needs inclusive mode selection
+" to work properly (otherwise "vfc" will not select the character "c").
+set selection=inclusive
