@@ -2,12 +2,14 @@
 set encoding=utf-8
 
 """""" DIR CONFIG """"""
-" Store backup, undo, and swap files in temp directory
+" Store swap, backup and undo files in temp directory
 set directory=D:/Program\ Files\ (x86)/Vim/temp//
 set backupdir=D:/Program\ Files\ (x86)/Vim/temp//
 set undodir=D:/Program\ Files\ (x86)/Vim/temp//
 
 """""" COLOR SCHEME """"""
+syntax on                       " turn on syntax highlighting
+                                " note this must be set BEFORE color configuration or some colors can be overriden
 colo morning                                         " color scheme theme
 hi CursorLine   cterm=NONE ctermbg=2 guibg=#88ddff   " line highlight color
 hi CursorColumn cterm=NONE ctermbg=6 guibg=#ffc0cb   " column highlight color
@@ -22,28 +24,37 @@ if has('gui_running')
 endif
 set backspace=indent,eol,start              " in Insert Mode, allow backspace through indent, end of line and previous content.
 set number              " show line number
+set relativenumber      " show relative line number (to current line)
+set ruler               " display current position of the cursor in status bar
 set cursorline          " highlight current line
 set cursorcolumn        " highlight current column
 set showcmd             " show command in bottom bar
-filetype indent on      " load filetype-specific indent file
 set wildmenu            " show visual menu for command auto-complete
-set lazyredraw          " redraw only when we need to (improves performance)
 set showmatch           " highlight matching [{()}]
+set lazyredraw          " redraw only when we need to (improves performance)
+set noerrorbells        " no alert sound
+set visualbell          " use visual alert
 
 """""" SPELL CHECK CONFIG """"""
 set spell
 
 """""" SPACES, TABS AND INDENTATION CONFIG """"""
+filetype indent on      " load filetype-specific indent file
+set autoindent          " auto-indent after pressing enter
 set tabstop=4           " number of visual spaces per TAB
 set expandtab           " tabs are spaces
-set softtabstop=4     " number of spaces in tab when editing
+set softtabstop=4       " number of spaces in tab when editing
 set shiftwidth=4        " number of spaces per indentation
-set formatoptions-=tc     " Don't limit line length 
-                                           "( vim's default "set textwidth=0" should have the same behavior but it could be overriden by some filetype plug-ins)
+set textwidth=0         " limit line length (auto line-breaking); 0 means no limit
+set linebreak           " set auto line-breaking to not break inside a word
+set formatoptions-=tc   " Don't limit line length 
+                        "( vim's default "set textwidth=0" should have the same behavior but it could be overriden by some filetype plug-ins)
 
 """""" SEARCHING CONFIG """"""
 set incsearch           " search as characters are being entered
 set hlsearch            " highlight matches
+set ignorecase          " default to case insensitive
+set smartcase           " auto case sensitive when there is uppercase letter
 
 """""" FOLDING CONFIG """"""
 set foldenable          " enable folding
@@ -87,6 +98,29 @@ autocmd InsertEnter * let CursorColumnI = col('.')
 autocmd CursorMovedI * let CursorColumnI = col('.')
 autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
 
+"""""" MULTI-WINDOW CONFIG """"""
+set autochdir     " change working directory according to active window
+
+" Shortcut to switch between windows created by the :sp or :vs command. It also sets 
+" the current file path to that of the file in the window that gains focus.
+" EDIT: Disabled <Tab> map because <Tab> in vim is strictly equivalent to 
+"<C-i>, which is used to navigate forward in the jump list. 
+" Map to <C-tab> instead (actually this is mapped in mswin.vim by default)
+"noremap <Tab> <C-W>w:cd %:p:h<CR>:<CR>
+noremap <S-Tab> <C-W>W:cd %:p:h<CR>:<CR>
+noremap <C-Tab> <C-W>w:cd %:p:h<CR>:<CR>
+
+"""""" OTHER VIM CONFIG """"""
+set history=1000  " number of history operations to remember
+set autoread      " detect external changes to a file while editing and give a prompt
+set mouse=a       " enable mouse
+
+"""""" PLUGIN CONFIG """"""
+" fanfingtastic config
+let g:fanfingtastic_ignorecase = 1
+let g:fanfingtastic_all_inclusive = 1
+
+
 """""" NORMAL MODE SHORTCUTS """"""
 " select last inserted text
 nnoremap gV `[v`]
@@ -116,13 +150,18 @@ xnoremap <silent><expr> <A-j> mode() ==# "V" ? "\"od\"op`[V`]l" : "\"od<Down>\"o
 " badly interpreted and Vim would only receive <Nul>.)
 nnoremap <C-space> *#
 
-" Use ",," for the original "," functionality 
-" (so "," can be used for other shortcut as a leader)
-noremap ,, ,
+" Use ",," for the original "," functionality,
+" so "," can be used for other shortcut as a leader
+" (I'm using the fanfingtastic plugin so it's not mapped to vanilla comma)
+"map ,, ,
+map ,, <Plug>fanfingtastic_,
 
 " Edit file in current file's directory map
 map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
 
+" Paste last yank
+map ,p "0p
+map ,P "0P
 
 """""" INSERT MODE SHORTCUTS """"""
 " insert mode navigation/editing
@@ -194,23 +233,13 @@ nnoremap <leader>a :Ag
 map! <A-a> <Esc>
 map <A-a> <Esc>
 " Alt+; is :
-map <A-;> :
+" map <A-;> :
 " Alt+1 is ! (does not work)
 imap ± !
 " Alt+2 is @ (does not work)
 imap ² @
 " Alt+m is Enter
 imap <A-m> <CR> 
-
-" Switch between windows created by the :sp or :vs command. It also sets 
-" the current file path to that of the file in the window that gains focus.
-" EDIT: Disabled <Tab> map because <Tab> in vim is strictly equivalent to 
-"<C-i>, which is used to navigate forward in the jump list. 
-" Map to <C-tab> instead (actually this is mapped in mswin.vim by default)
-set autochdir
-"noremap <Tab> <C-W>w:cd %:p:h<CR>:<CR>
-noremap <S-Tab> <C-W>W:cd %:p:h<CR>:<CR>
-noremap <C-Tab> <C-W>w:cd %:p:h<CR>:<CR>
 
 
 set diffexpr=MyDiff()
