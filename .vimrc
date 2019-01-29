@@ -32,8 +32,9 @@ set showcmd             " show command in bottom bar
 set wildmenu            " show visual menu for command auto-complete
 set showmatch           " highlight matching [{()}]
 set lazyredraw          " redraw only when we need to (improves performance)
-set noerrorbells        " no alert sound
-set visualbell          " use visual alert
+"set noerrorbells        " no alert sound
+"set visualbell          " use visual alert
+set belloff=all         " no any alert
 
 """""" SPELL CHECK CONFIG """"""
 set spell

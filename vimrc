@@ -21,6 +21,6 @@ nnoremap <C-@> <C-Y>
 :nnoremap <F2> <C-x>
 
 " Use inclusive selection for visual mode (since "behave mswin" set it to
-" exclusive mode). The fanfingtastic plugin needs inclusive mode selection
-" to work properly (otherwise "vfc" will not select the character "c").
+" exclusive mode). (fanfingtastic used to not support exclusive mode but
+" it should be working fine now without the setting.)
 set selection=inclusive
