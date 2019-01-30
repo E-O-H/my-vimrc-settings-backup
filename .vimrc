@@ -90,8 +90,8 @@ endfunction
 nnoremap 0 :call ToggleZero()<CR>
 
 " use 4 to move to end of line (and $ for the number 4)
-noremap 4 $
-noremap $ 4
+"noremap 4 $
+"noremap $ 4
 
 " prevent cursur from moving back one character when exiting insert-mode
 let CursorColumnI = 0 "the cursor column position in INSERT
@@ -151,6 +151,18 @@ xnoremap <silent><expr> <A-j> mode() ==# "V" ? "\"od\"op`[V`]l" : "\"od<Down>\"o
 " badly interpreted and Vim would only receive <Nul>.)
 nnoremap <C-space> *#
 
+" use alt key to input !@#$%^&*()
+noremap <A-1> !
+noremap <A-2> @
+noremap <A-3> #
+noremap <A-4> $
+noremap <A-5> %
+noremap <A-6> ^
+noremap <A-7> &
+noremap <A-8> *
+noremap <A-9> (
+noremap <A-0> )
+
 " Use ",," for the original "," functionality,
 " so "," can be used for other shortcut as a leader
 " (I'm using the fanfingtastic plugin so it's not mapped to vanilla comma)
@@ -180,7 +192,7 @@ imap <A-e> <C-O>e<C-O>a
 imap <A-E> <C-O>E<C-O>a
 imap <A-I> <C-O>zz
 imap ° <C-O>0
-imap ´ <C-O>4
+inoremap ´ <C-O>$
 imap <C-A-b> <C-O><C-B>
 imap <C-A-f> <C-O><C-F>
 imap <C-A-u> <C-O><C-u>
