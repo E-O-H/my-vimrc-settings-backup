@@ -3,9 +3,9 @@ set encoding=utf-8
 
 """""" DIR CONFIG """"""
 " Store swap, backup and undo files in temp directory
-set directory=D:/Program\ Files\ (x86)/Vim/temp//
-set backupdir=D:/Program\ Files\ (x86)/Vim/temp//
-set undodir=D:/Program\ Files\ (x86)/Vim/temp//
+set directory=D:/vim_swap_backup_undo_files//
+set backupdir=D:/vim_swap_backup_undo_files//
+set undodir=D:/vim_swap_backup_undo_files//
 
 """""" COLOR SCHEME """"""
 syntax on                       " turn on syntax highlighting
@@ -89,15 +89,22 @@ function! ToggleZero()
 endfunction
 nnoremap 0 :call ToggleZero()<CR>
 
+" toggle relative line number
+function! ToggleLineNumber()
+    set relativenumber!
+endfunction
+nnoremap ,l :call ToggleLineNumber()<CR>
+
+
 " use 4 to move to end of line (and $ for the number 4)
 "noremap 4 $
 "noremap $ 4
 
 " prevent cursur from moving back one character when exiting insert-mode
-let CursorColumnI = 0 "the cursor column position in INSERT
-autocmd InsertEnter * let CursorColumnI = col('.')
-autocmd CursorMovedI * let CursorColumnI = col('.')
-autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
+"let CursorColumnI = 0 "the cursor column position in INSERT
+"autocmd InsertEnter * let CursorColumnI = col('.')
+"autocmd CursorMovedI * let CursorColumnI = col('.')
+"autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
 
 """""" MULTI-WINDOW CONFIG """"""
 set autochdir     " change working directory according to active window
@@ -176,6 +183,13 @@ map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
 map ,p "0p
 map ,P "0P
 
+" jump between first level braces (C++ methods)
+" (from official help, makes [[/]]/[]/][ work on non-first column braces)
+map [[ ?{<CR>w99[{
+map ][ /}<CR>b99]}
+map ]] j0[[%/{<CR>
+map [] k$][%?}<CR>
+
 """""" INSERT MODE SHORTCUTS """"""
 " insert mode navigation/editing
 " (Note vim does not distinguish between <C-a> and <C-A>,
@@ -221,6 +235,13 @@ imap <A-m> <C-O>m
 
 " break undo sequence without leaving Insert Mode
 inoremap <A-Space> <C-G>u
+
+" Automatically break undo sequence in Insert Mode: 
+" before deleting line and word
+" before new line
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+inoremap <CR> <c-g>u<CR>
 
 """""" LEADER SHORTCUTS """"""
 " Use the default vim leader key "\".
@@ -284,3 +305,15 @@ function MyDiff()
     let &shellxquote=l:shxq_sav
   endif
 endfunction
+
+
+" move to next/previous line but retain cursor line position on screen
+function! s:Saving_scroll(cmd)
+  let save_scroll = &scroll
+  execute 'normal! ' . a:cmd
+  let &scroll = save_scroll
+endfunction
+nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
+vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
+nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
+vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
